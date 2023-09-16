@@ -1,38 +1,43 @@
 from time import time
+from dataclasses import dataclass
+from decorators import timing_decorator
 
+@dataclass
 class Customer:
-    def __init__(self,name,birthdate,account_number,balance):
-        self.created = time()
-        self.last_updated = self.created
-        self.name = name
-        self.birthdate = birthdate
-        self.account_number = account_number
-        self.balance = balance
+    name: str
+    birthdate: str
+    account_number: str
+    balance: float
+    created: float = None
+    last_updated: float = None
 
-def create_customers_with_dict(num_customer)-> str: 
-    customers = {}
-    start_time = time()
-    for i in range(1,num_customer):
-        account_number = f'1111-{i:010d}'
-        customer = Customer(f'Customer {i}', '2000-01-01', account_number,0)
-        customers[account_number] = customer
-    end_time = time()
-    elapsed_time = (end_time - start_time) * 1000
-    print(f"Created {num_customer} customers in {elapsed_time:.2f} ms")
+def generate_account_numbers(num_customers):
+    for i in range(1, num_customers):
+        yield f'1111-{i:010d}'
+
+@timing_decorator
+def create_customers_with_dict(num_customers):
+    account_numbers = generate_account_numbers(num_customers)
+    current_time = time()
+    customers = {
+        account_number: Customer(
+            name=f'Customer {account_number}',
+            birthdate='2000-01-01',
+            account_number=account_number,
+            balance=0,
+            created=current_time,
+            last_updated=current_time
+        ) for account_number in account_numbers
+    }
     return customers
 
-def find_customer_by_account(customers, account_number_to_find)->str:
-    start_time = time()
-    customer = customers.get(account_number_to_find)
+@timing_decorator
+def find_customer_by_account(customers, account_number_to_find):
+    customer = customers.get(account_number_to_find, None)
     if customer:
-        end_time = time()
-        elapsed_time = (end_time - start_time) * 1000
-        print(f"Found customer {account_number_to_find} in {elapsed_time:.2f} ms")
+        print(f"Found customer {account_number_to_find}")
     else:
-        end_time = time()
-        elapsed_time = (end_time - start_time) * 1000
-        print(f"Customer not found {account_number_to_find} in {elapsed_time:.2f} ms")
-    return customer
+        print(f"Customer not found {account_number_to_find}")
 
 if __name__ == "__main__":
     customers_dict = create_customers_with_dict(10000000)
