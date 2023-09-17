@@ -1,6 +1,7 @@
 from time import time
 from dataclasses import dataclass
 from decorators import timing_decorator
+import random
 
 @dataclass
 class Customer:
@@ -11,16 +12,39 @@ class Customer:
     created: float = None
     last_updated: float = None
 
-def generate_account_numbers(num_customers):
-    for i in range(1, num_customers):
-        yield f'1111-{i:010d}'
+def generate_unique_account_number(existing_account_numbers):
+    while True:
+        account_number = random.randint(1, 10_000_000)
+        if account_number not in existing_account_numbers:
+            account_number_str = f'1111-{account_number:010d}'
+            existing_account_numbers.add(account_number)
+            return account_number_str
+
+def generate_random_account_numbers(num_customers):
+    existing_account_numbers = set()
+    account_numbers = []
+    for _ in range(num_customers):
+        account_number = generate_unique_account_number(existing_account_numbers)
+        account_numbers.append(account_number)
+    random.shuffle(account_numbers)
+    return account_numbers
+
+
+def quicksort(arr):
+    if len(arr) <= 1:
+        return arr
+    pivot = arr[len(arr) // 2].account_number
+    left = [x for x in arr if x.account_number < pivot]
+    middle = [x for x in arr if x.account_number == pivot]
+    right = [x for x in arr if x.account_number > pivot]
+    return quicksort(left) + middle + quicksort(right)
 
 @timing_decorator
-def create_customers_with_dict(num_customers):
-    account_numbers = generate_account_numbers(num_customers)
+def create_customers_with_list(num_customers):
+    account_numbers = generate_random_account_numbers(num_customers)
     current_time = time()
-    customers = {
-        account_number: Customer(
+    customers = [
+        Customer(
             name=f'Customer {account_number}',
             birthdate='2000-01-01',
             account_number=account_number,
@@ -28,20 +52,23 @@ def create_customers_with_dict(num_customers):
             created=current_time,
             last_updated=current_time
         ) for account_number in account_numbers
-    }
+    ]
     return customers
 
-@timing_decorator
 def find_customer_by_account(customers, account_number_to_find):
-    customer = customers.get(account_number_to_find, None)
-    if customer:
-        print(f"Found customer {account_number_to_find}")
-    else:
-        print(f"Customer not found {account_number_to_find}")
+    for customer in customers:
+        if customer.account_number == account_number_to_find:
+            print(f"Found customer {account_number_to_find}")
+            return
+    print(f"Customer not found {account_number_to_find}")
 
 if __name__ == "__main__":
-    customers_dict = create_customers_with_dict(10000000)
-
-    find_customer_by_account(customers_dict, '1111-0000001000')
-    find_customer_by_account(customers_dict, '1111-0009999999')
-    find_customer_by_account(customers_dict, '1111-9999999999')
+    customers_list = create_customers_with_list(10_000_00)
+    start = time()
+    sort_customers = quicksort(customers_list)
+    end = time()
+    sorting_time = (end - start) * 1000
+    print(f"It took {sorting_time:.2f}ms to sort ")
+    print(f"Första kundens kontonummer: {sort_customers[0].account_number}")
+    print(f"Sista kundens kontonummer: {sort_customers[-1].account_number}")
+    
