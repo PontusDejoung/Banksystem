@@ -12,23 +12,15 @@ class Customer:
     created: float = None
     last_updated: float = None
 
-def generate_unique_account_number(existing_account_numbers):
-    while True:
-        account_number = random.randint(1, 10_000_000)
-        if account_number not in existing_account_numbers:
-            account_number_str = f'1111-{account_number:010d}'
-            existing_account_numbers.add(account_number)
-            return account_number_str
-
-def generate_random_account_numbers(num_customers):
-    existing_account_numbers = set()
+def generate_account_numbers(num_customers):
     account_numbers = []
-    for _ in range(num_customers):
-        account_number = generate_unique_account_number(existing_account_numbers)
-        account_numbers.append(account_number)
-    random.shuffle(account_numbers)
-    return account_numbers
+    for i in range(1, num_customers):
+        account_number = random.randint(1, 10_000_000)
+        if account_number not in account_numbers:
+            account_number_str = f'1111-{account_number:010d}'
+            account_numbers.append(account_number_str)
 
+    return account_numbers
 
 def quicksort(arr):
     if len(arr) <= 1:
@@ -41,7 +33,7 @@ def quicksort(arr):
 
 @timing_decorator
 def create_customers_with_list(num_customers):
-    account_numbers = generate_random_account_numbers(num_customers)
+    account_numbers = generate_account_numbers(num_customers)
     current_time = time()
     customers = [
         Customer(
@@ -63,7 +55,7 @@ def find_customer_by_account(customers, account_number_to_find):
     print(f"Customer not found {account_number_to_find}")
 
 if __name__ == "__main__":
-    customers_list = create_customers_with_list(10_000_00)
+    customers_list = create_customers_with_list(10000)
     start = time()
     sort_customers = quicksort(customers_list)
     end = time()
