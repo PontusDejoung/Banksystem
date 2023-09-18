@@ -11,25 +11,10 @@ class Customer:
     created: float = None
     last_updated: float = None
 
-def generate_account_numbers(num_customers):
-    for i in range(1, num_customers):
-        yield f'1111-{i:010d}'
-
 @timing_decorator
 def create_customers_with_dict(num_customers):
-    account_numbers = generate_account_numbers(num_customers)
-    current_time = time()
-    customers = {
-        account_number: Customer(
-            name=f'Customer {account_number}',
-            birthdate='2000-01-01',
-            account_number=account_number,
-            balance=0,
-            created=current_time,
-            last_updated=current_time
-        ) for account_number in account_numbers
-    }
-    return customers
+    customer_dict = {f'1111-{i:010}': Customer(f'Customer{i}', f'01/01/1990', f'1111-{i:010}', 0) for i in range(1, num_customers)}
+    return customer_dict
 
 @timing_decorator
 def find_customer_by_account(customers, account_number_to_find):
