@@ -15,13 +15,12 @@ class Customer:
 def generate_account_numbers(num_customers):
     account_numbers = []
     for i in range(1, num_customers):
-        account_number = random.randint(1, 10_000_000)
+        account_number = random.randint(1, 10_000_0000)
         if account_number not in account_numbers:
             account_number_str = f'1111-{account_number:010d}'
             account_numbers.append(account_number_str)
-
-    return account_numbers
-
+            yield account_number_str
+        
 def quicksort(arr):
     if len(arr) <= 1:
         return arr
@@ -47,20 +46,33 @@ def create_customers_with_list(num_customers):
     ]
     return customers
 
-def find_customer_by_account(customers, account_number_to_find):
-    for customer in customers:
-        if customer.account_number == account_number_to_find:
-            print(f"Found customer {account_number_to_find}")
-            return
-    print(f"Customer not found {account_number_to_find}")
+@timing_decorator
+def binary_search(customers, account_number_to_find):
+    left = 0
+    right = len(customers) - 1
+
+    while left <= right:
+        mid = (left + right) // 2
+        mid_customer = customers[mid]
+
+        if mid_customer.account_number == account_number_to_find:
+            return mid_customer
+        elif mid_customer.account_number < account_number_to_find:
+            left = mid + 1
+        else:
+            right = mid - 1
+
+    return None
 
 if __name__ == "__main__":
-    customers_list = create_customers_with_list(10000)
+    customers_list = create_customers_with_list(10_000_00)
     start = time()
     sort_customers = quicksort(customers_list)
     end = time()
     sorting_time = (end - start) * 1000
     print(f"It took {sorting_time:.2f}ms to sort ")
+    binary_search(sort_customers,"1111-0000001000")
+
     print(f"Första kundens kontonummer: {sort_customers[0].account_number}")
     print(f"Sista kundens kontonummer: {sort_customers[-1].account_number}")
     
