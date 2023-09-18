@@ -2,6 +2,7 @@ from time import time
 from dataclasses import dataclass
 from decorators import timing_decorator
 import random
+from datetime import datetime
 
 @dataclass
 class Customer:
@@ -12,39 +13,37 @@ class Customer:
     created: float = None
     last_updated: float = None
 
-def generate_account_numbers(num_customers):
-    account_numbers = []
-    for i in range(1, num_customers):
-        account_number = random.randint(1, 10_000_0000)
-        if account_number not in account_numbers:
-            account_number_str = f'1111-{account_number:010d}'
-            account_numbers.append(account_number_str)
-            yield account_number_str
-        
-def quicksort(arr):
-    if len(arr) <= 1:
-        return arr
-    pivot = arr[len(arr) // 2].account_number
-    left = [x for x in arr if x.account_number < pivot]
-    middle = [x for x in arr if x.account_number == pivot]
-    right = [x for x in arr if x.account_number > pivot]
-    return quicksort(left) + middle + quicksort(right)
-
 @timing_decorator
-def create_customers_with_list(num_customers):
-    account_numbers = generate_account_numbers(num_customers)
-    current_time = time()
-    customers = [
-        Customer(
-            name=f'Customer {account_number}',
-            birthdate='2000-01-01',
-            account_number=account_number,
-            balance=0,
-            created=current_time,
-            last_updated=current_time
-        ) for account_number in account_numbers
-    ]
-    return customers
+def generate_account_numbers_in_random_order(num_customers):
+    timestamp = datetime.now()
+    customer_list = [
+    Customer(f'Customer{i}', f'01/01/1990', f'1111-{account_number:08d}', 0,timestamp,timestamp)
+    for i, account_number in enumerate(random.sample(range(1, 10_000_000 + 1), num_customers))
+]
+
+    return customer_list
+        
+def quicksort(arr, low, high):
+    if low < high:
+        pivot_index = partition(arr, low, high)
+        quicksort(arr, low, pivot_index)
+        quicksort(arr, pivot_index + 1, high)
+
+def partition(arr, low, high):
+    pivot = arr[(low + high) // 2].account_number
+    i = low - 1
+    j = high + 1
+    while True:
+        i += 1
+        while arr[i].account_number < pivot:
+            i += 1
+        j -= 1
+        while arr[j].account_number > pivot:
+            j -= 1
+        if i >= j:
+            return j
+        arr[i], arr[j] = arr[j], arr[i]
+
 
 @timing_decorator
 def binary_search(customers, account_number_to_find):
@@ -56,6 +55,8 @@ def binary_search(customers, account_number_to_find):
         mid_customer = customers[mid]
 
         if mid_customer.account_number == account_number_to_find:
+            print("Konto hittat:")
+            print(f"Kontonummer: {mid_customer.account_number}")
             return mid_customer
         elif mid_customer.account_number < account_number_to_find:
             left = mid + 1
@@ -65,14 +66,14 @@ def binary_search(customers, account_number_to_find):
     return None
 
 if __name__ == "__main__":
-    customers_list = create_customers_with_list(10_000_00)
+    customers_list = generate_account_numbers_in_random_order(10_000_000)
     start = time()
-    sort_customers = quicksort(customers_list)
+    sort_customers = quicksort(customers_list,0,len(customers_list) - 1)
     end = time()
     sorting_time = (end - start) * 1000
     print(f"It took {sorting_time:.2f}ms to sort ")
-    binary_search(sort_customers,"1111-0000001000")
+    binary_search(customers_list,"1111-00001000")
 
-    print(f"Första kundens kontonummer: {sort_customers[0].account_number}")
-    print(f"Sista kundens kontonummer: {sort_customers[-1].account_number}")
+    print(f"Första kundens kontonummer: {customers_list[0].account_number}")
+    print(f"Sista kundens kontonummer: {customers_list[-1].account_number}")
     
