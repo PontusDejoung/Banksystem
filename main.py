@@ -1,6 +1,7 @@
 from time import time
 from dataclasses import dataclass
 from decorators import timing_decorator
+from datetime import datetime
 
 @dataclass
 class Customer:
@@ -8,12 +9,13 @@ class Customer:
     birthdate: str
     account_number: str
     balance: float
-    created: float = None
-    last_updated: float = None
+    created: datetime 
+    last_updated: datetime
 
 @timing_decorator
 def create_customers_with_dict(num_customers):
-    customer_dict = {f'1111-{i:010}': Customer(f'Customer{i}', f'01/01/1990', f'1111-{i:010}', 0) for i in range(1, num_customers)}
+    timestamp = datetime.now()
+    customer_dict = {f'1111-{i:010}': Customer(f'Customer{i}', f'01/01/1990', f'1111-{i:010}', 0,timestamp,timestamp) for i in range(1, num_customers)}
     return customer_dict
 
 @timing_decorator
@@ -25,7 +27,7 @@ def find_customer_by_account(customers, account_number_to_find):
         print(f"Customer not found {account_number_to_find}")
 
 if __name__ == "__main__":
-    customers_dict = create_customers_with_dict(10000000)
+    customers_dict = create_customers_with_dict(10_000_000)
 
     find_customer_by_account(customers_dict, '1111-0000001000')
     find_customer_by_account(customers_dict, '1111-0009999999')
