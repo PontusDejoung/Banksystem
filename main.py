@@ -19,16 +19,17 @@ def create_customers_with_dict(num_customers):
     return customer_dict
 
 @timing_decorator
-def find_customer_by_account(customers, account_number_to_find):
-    customer = customers.get(account_number_to_find, None)
-    if customer:
-        print(f"Found customer {account_number_to_find}")
-    else:
-        print(f"Customer not found {account_number_to_find}")
+def find_customer_by_account(customers, *account_numbers_to_find):
+    found_customers = {account: customers.get(account, None) for account in account_numbers_to_find}
+    for account, customer in found_customers.items():
+        if customer:
+            print(f"Found customer {account}")
+        else:
+            print(f"Customer not found {account}")
 
 if __name__ == "__main__":
     customers_dict = create_customers_with_dict(10_000_000)
-
-    find_customer_by_account(customers_dict, '1111-0000001000')
-    find_customer_by_account(customers_dict, '1111-0009999999')
-    find_customer_by_account(customers_dict, '1111-9999999999')
+    find_customer_by_account(customers_dict,'1111-0000001000')
+    find_customer_by_account(customers_dict,'1111-9999999999')
+    find_customer_by_account(customers_dict,'1111-0009999999')
+    
