@@ -43,9 +43,7 @@ def search_customer(account_no, registry):
 
 
 if __name__ == "__main__":
-
-    # Skapa 10 miljoner kunder och mäta tiden
-    num_customers = 10000000
+    num_customers = 10_000_000
     customer_registry, creation_time = create_customer_list(num_customers)
     print(f"Time to create {num_customers} customers: {creation_time:.2f} ms")
 
@@ -53,14 +51,13 @@ if __name__ == "__main__":
     search_account = '1111-0000001000'
     found_customer, search_time = search_customer(search_account, customer_registry)
     if found_customer:
-        print(f"Found account {search_account} for {found_customer.name} in {search_time:.2f} ms")
+        print(f"Found account {search_account} in {search_time:.2f} ms")
     else:
         print(f"Account {search_account} not found in {search_time:.2f} ms")
 
-    # Sök efter ett konto som inte finns (1111-9999999999)
     search_account = '1111-9999999999'
     found_customer, search_time = search_customer(search_account, customer_registry)
     if found_customer:
-        print(f"Found account {search_account} for {found_customer.name} in {search_time:.2f} ms")
+        print(f"Found account {search_account} in {search_time:.2f} ms")
     else:
         print(f"Account {search_account} not found in {search_time:.2f} ms")
