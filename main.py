@@ -25,7 +25,7 @@ def create_customer_list(num_customers:int):
 def find_customer_by_account(customers:list, account_number_to_find:str):
     for customer in customers:
         if customer.account_number == account_number_to_find:
-            print(f"Kontonummer {account_number_to_find} hittat: {customer}")
+            print(f"Account Number:{account_number_to_find} Found:{customer}")
             return
     else:
         print(f'Customer {account_number_to_find} not found')
