@@ -62,7 +62,7 @@ def quick_sort(array, start, end, compare_func):
     quick_sort(array, start, p-1, compare_func)
     quick_sort(array, p+1, end, compare_func)
 
-def find_customer(customers:list,*account_numbers_to_find:str):
+def find_customer_by_account_number(customers:list,*account_numbers_to_find:str):
     results = [binary_search(customers, account_number) for account_number in account_numbers_to_find]
     for result, account_number in zip(results, account_numbers_to_find):
         if result:
@@ -80,8 +80,8 @@ if __name__ == "__main__":
     print(f"It took {sorting_time:.2f}ms to sort ")
     print(f"Första kundens kontonummer: {customer_list[0].account_number}")
     print(f"Sista kundens kontonummer: {customer_list[-1].account_number}")
-    find_customer(customer_list,"1111-0000001000")
-    find_customer(customer_list,"1111-0009999999",)
-    find_customer(customer_list,"1111-9999999999")
+    find_customer_by_account_number(customer_list,"1111-0000001000")
+    find_customer_by_account_number(customer_list,"1111-0009999999",)
+    find_customer_by_account_number(customer_list,"1111-9999999999")
     
     
