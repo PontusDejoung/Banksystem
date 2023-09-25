@@ -23,9 +23,9 @@ def find_customer_by_account(customers, *account_numbers_to_find):
     found_customers = {account: customers.get(account, None) for account in account_numbers_to_find}
     for account, customer in found_customers.items():
         if customer:
-            print(f"Found customer {account}")
+            print(f"Found Account:{account}")
         else:
-            print(f"Customer not found {account}")
+            print(f"Account:{account} not found")
 
 if __name__ == "__main__":
     customers_dict = create_customers_with_dict(10_000_000)
