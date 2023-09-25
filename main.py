@@ -28,7 +28,7 @@ def find_customer_by_account(customers:list, account_number_to_find:str):
             print(f"Kontonummer {account_number_to_find} hittat: {customer}")
             return
     else:
-        print('Kund ej hittad')
+        print(f'Customer {account_number_to_find} not found')
 
 
 if __name__ == "__main__":
