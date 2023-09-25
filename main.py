@@ -69,9 +69,9 @@ def find_customer(customers:list,*account_numbers_to_find:str):
     results = [binary_search(customers, account_number) for account_number in account_numbers_to_find]
     for result, account_number in zip(results, account_numbers_to_find):
         if result:
-            print(f"Kontonummer {account_number} hittat: {result}")
+            print(f"Account Number:{account_number} hittat: {result}")
         else:
-            print(f"Kunde inte hitta kontonummer {account_number}")
+            print(f"Could not find Account Number:{account_number}")
 
 
 if __name__ == "__main__":
