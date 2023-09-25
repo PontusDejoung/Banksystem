@@ -14,7 +14,7 @@ class Customer:
     last_updated: datetime
 
 @timing_decorator
-def generate_account_numbers_in_random_order(num_customers):
+def generate_account_numbers_in_random_order(num_customers:int):
     timestamp = datetime.now()
     customer_list = [
     Customer(f'Customer{i}', f'01/01/1990', f'1111-{account_number:010d}', 0,timestamp,timestamp)
