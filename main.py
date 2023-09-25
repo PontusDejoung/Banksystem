@@ -14,7 +14,7 @@ class Customer:
     last_updated: datetime
 
 @timing_decorator
-def generate_account_numbers_in_random_order(num_customers):
+def generate_account_numbers_in_random_order(num_customers: int):
     timestamp = datetime.now()
     customer_list = [
     Customer(f'Customer{i}', f'01/01/1990', f'1111-{account_number:010d}', 0,timestamp,timestamp)
@@ -61,13 +61,12 @@ def partition(array, start, end, compare_func):
 def quick_sort(array, start, end, compare_func):
     if start >= end:
         return
-
     p = partition(array, start, end, compare_func)
     quick_sort(array, start, p-1, compare_func)
     quick_sort(array, p+1, end, compare_func)
 
-def find_customer(*account_numbers_to_find):
-    results = [binary_search(customers_list, account_number) for account_number in account_numbers_to_find]
+def find_customer(customers:list,*account_numbers_to_find:str):
+    results = [binary_search(customers, account_number) for account_number in account_numbers_to_find]
     for result, account_number in zip(results, account_numbers_to_find):
         if result:
             print(f"Kontonummer {account_number} hittat: {result}")
@@ -76,14 +75,16 @@ def find_customer(*account_numbers_to_find):
 
 
 if __name__ == "__main__":
-    customers_list = generate_account_numbers_in_random_order(10_000_000)
+    customer_list = generate_account_numbers_in_random_order(10_000_000)
     start = time()
-    quick_sort(customers_list, 0, len(customers_list) - 1, lambda x, y: x.account_number > y.account_number)
+    quick_sort(customer_list, 0, len(customer_list) - 1, lambda x, y: x.account_number > y.account_number)
     end = time()
     sorting_time = (end - start) * 1000
     print(f"It took {sorting_time:.2f}ms to sort ")
-    print(f"Första kundens kontonummer: {customers_list[0].account_number}")
-    print(f"Sista kundens kontonummer: {customers_list[-1].account_number}")
-    find_customer("1111-0000001000", "1111-0009999999", "1111-9999999999")
+    print(f"Första kundens kontonummer: {customer_list[0].account_number}")
+    print(f"Sista kundens kontonummer: {customer_list[-1].account_number}")
+    find_customer(customer_list,"1111-0000001000")
+    find_customer(customer_list,"1111-0009999999",)
+    find_customer(customer_list,"1111-9999999999")
     
     
