@@ -41,7 +41,6 @@ def partition(array, start, end, compare_func):
     pivot = array[start]
     low = start + 1
     high = end
-
     while True:
         while low <= high and compare_func(array[high], pivot):
             high = high - 1
@@ -53,9 +52,7 @@ def partition(array, start, end, compare_func):
             array[low], array[high] = array[high], array[low]
         else:
             break
-
     array[start], array[high] = array[high], array[start]
-
     return high
 
 def quick_sort(array, start, end, compare_func):
