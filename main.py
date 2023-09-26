@@ -17,8 +17,7 @@ def create_customer_list(num_customers:int):
     timestamp = datetime.now()
     customers = []
     for i in range(1, num_customers + 1):
-        account_no = f'1111-{i:010}'
-        customers.append(Customer(f'Customer {i}', '2000-01-01', account_no, 0, timestamp, timestamp))
+        customers.append(Customer(f'Customer {i}', '2000-01-01', f'1111-{i:010}', 0, timestamp, timestamp))
     return customers
 
 @timing_decorator
