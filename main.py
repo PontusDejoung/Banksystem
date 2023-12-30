@@ -78,8 +78,6 @@ if __name__ == "__main__":
     end = time()
     sorting_time = (end - start) * 1000
     print(f"It took {sorting_time:.2f}ms to sort ")
-    print(f"Första kundens kontonummer: {customer_list[0].account_number}")
-    print(f"Sista kundens kontonummer: {customer_list[-1].account_number}")
     find_customer_by_account_number(customer_list,"1111-0000001000")
     find_customer_by_account_number(customer_list,"1111-0009999999",)
     find_customer_by_account_number(customer_list,"1111-9999999999")
