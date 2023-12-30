@@ -52,5 +52,3 @@ if __name__ == "__main__":
     end = time()
     sorting_time = (end - start) * 1000
     print(f"It took {sorting_time:.2f}ms to sort ")
-    print(f"Första kundens kontonummer: {customers_list[0].account_number}")
-    print(f"Sista kundens kontonummer: {customers_list[-1].account_number}")
